@@ -1,0 +1,12 @@
+[submodule "camera_control_msgs_ros2"]
+	path = camera_control_msgs_ros2
+	url = git@github.com:berndpfrommer/camera_control_msgs_ros2.git
+[submodule "image_meta_msgs_ros2"]
+	path = image_meta_msgs_ros2
+	url = git@github.com:berndpfrommer/image_meta_msgs_ros2.git
+[submodule "flir_spinnaker_common"]
+	path = flir_spinnaker_common
+	url = git@github.com:berndpfrommer/flir_spinnaker_common.git
+[submodule "flir_spinnaker_ros2"]
+	path = flir_spinnaker_ros2
+	url = git@github.com:berndpfrommer/flir_spinnaker_ros2.git
