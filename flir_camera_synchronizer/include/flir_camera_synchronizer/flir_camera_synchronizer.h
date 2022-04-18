@@ -5,6 +5,8 @@
 #include <message_filters/sync_policies/approximate_time.h>
 #include <message_filters/synchronizer.h>
 
+#include <image_transport/image_transport.hpp>
+
 #include <sensor_msgs/msg/image.hpp>
 
 #include <memory>
@@ -31,7 +33,7 @@ public:
   typedef message_filters::Subscriber<ImageMsg> ImageSubscriber;
   typedef std::shared_ptr<ImageSubscriber> ImageSubscriberPtr;
 
-  typedef std::shared_ptr<rclcpp::Publisher<ImageMsg>> ImagePublisherPtr;
+  typedef image_transport::Publisher ImagePublisher;
 
   typedef message_filters::sync_policies::ApproximateTime<ImageMsg, ImageMsg> SyncPolicy2;
   typedef message_filters::sync_policies::ApproximateTime<ImageMsg, ImageMsg, ImageMsg> SyncPolicy3; 
@@ -64,7 +66,7 @@ private:
   // Publishers
   // ----------
 
-  std::vector<ImagePublisherPtr> m_publishers;
+  std::vector<ImagePublisher> m_publishers;
 
   // -----------------------
   // Message Filter Entities

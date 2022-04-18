@@ -39,7 +39,7 @@ FlirCameraSynchronizer::FlirCameraSynchronizer(const rclcpp::NodeOptions & optio
 
 
     RCLCPP_INFO(this->get_logger(), "Creating publisher for topic '%s'.", output.c_str());
-    auto publisher = this->create_publisher<ImageMsg>(output, 10);
+    auto publisher = image_transport::create_publisher(this, output);
     m_publishers.push_back(publisher);
   }
 
@@ -87,7 +87,7 @@ void FlirCameraSynchronizer::callback2(const ImageMsgConstPtr& msg1, const Image
   syncTimeStamps(msgs);
 
   for (unsigned int i = 0; i < msgs.size(); i++)
-    m_publishers[i]->publish(*msgs[i]);
+    m_publishers[i].publish(*msgs[i]);
 }
 
 void FlirCameraSynchronizer::callback3(const ImageMsgConstPtr& msg1, const ImageMsgConstPtr& msg2, const ImageMsgConstPtr& msg3) {
@@ -99,7 +99,7 @@ void FlirCameraSynchronizer::callback3(const ImageMsgConstPtr& msg1, const Image
   syncTimeStamps(msgs);
 
   for (unsigned int i = 0; i < msgs.size(); i++)
-    m_publishers[i]->publish(*msgs[i]);
+    m_publishers[i].publish(*msgs[i]);
 }
 
 void FlirCameraSynchronizer::callback4(const ImageMsgConstPtr& msg1, const ImageMsgConstPtr& msg2, const ImageMsgConstPtr& msg3, const ImageMsgConstPtr& msg4) {
@@ -112,7 +112,7 @@ void FlirCameraSynchronizer::callback4(const ImageMsgConstPtr& msg1, const Image
   syncTimeStamps(msgs);
 
   for (unsigned int i = 0; i < msgs.size(); i++)
-    m_publishers[i]->publish(*msgs[i]);
+    m_publishers[i].publish(*msgs[i]);
 }
 
 void FlirCameraSynchronizer::callback5(const ImageMsgConstPtr& msg1, const ImageMsgConstPtr& msg2, const ImageMsgConstPtr& msg3, const ImageMsgConstPtr& msg4, const ImageMsgConstPtr& msg5) {
@@ -126,7 +126,7 @@ void FlirCameraSynchronizer::callback5(const ImageMsgConstPtr& msg1, const Image
   syncTimeStamps(msgs);
 
   for (unsigned int i = 0; i < msgs.size(); i++)
-    m_publishers[i]->publish(*msgs[i]);
+    m_publishers[i].publish(*msgs[i]);
 }
 
 }  // namespace flir_camera_synchronizer

@@ -18,6 +18,7 @@ set(DEPENDENCIES
   rclcpp_components
   message_filters
   sensor_msgs
+  image_transport
 )
 
 foreach (dependency IN LISTS DEPENDENCIES)

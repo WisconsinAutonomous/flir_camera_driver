@@ -9,7 +9,7 @@
 	url = git@github.com:berndpfrommer/flir_spinnaker_common.git
 [submodule "flir_spinnaker_ros2"]
 	path = flir_spinnaker_ros2
-	url = git@github.com:berndpfrommer/flir_spinnaker_ros2.git
+	url = git@github.com:WisconsinAutonomous/flir_spinnaker_ros2.git
 [submodule "cam_sync_ros2"]
 	path = cam_sync_ros2
 	url = git@github.com:berndpfrommer/cam_sync_ros2.git
