@@ -48,19 +48,19 @@ FlirCameraSynchronizer::FlirCameraSynchronizer(const rclcpp::NodeOptions & optio
   // ----------------------------------
   using namespace std::placeholders;
   if (num_topics == 2) {
-    m_sync2 = std::make_shared<message_filters::Synchronizer<SyncPolicy2>>(SyncPolicy2(10), *m_subscribers[0], *m_subscribers[1]);
+    m_sync2 = std::make_shared<message_filters::Synchronizer<SyncPolicy2>>(SyncPolicy2(2), *m_subscribers[0], *m_subscribers[1]);
     m_sync2->registerCallback(std::bind(&FlirCameraSynchronizer::callback2, this, _1, _2));
   }
   else if (num_topics == 3) {
-    m_sync3 = std::make_shared<message_filters::Synchronizer<SyncPolicy3>>(SyncPolicy3(10), *m_subscribers[0], *m_subscribers[1], *m_subscribers[2]);
+    m_sync3 = std::make_shared<message_filters::Synchronizer<SyncPolicy3>>(SyncPolicy3(2), *m_subscribers[0], *m_subscribers[1], *m_subscribers[2]);
     m_sync3->registerCallback(std::bind(&FlirCameraSynchronizer::callback3, this, _1, _2, _3));
   }
   else if (num_topics == 4) {
-    m_sync4 = std::make_shared<message_filters::Synchronizer<SyncPolicy4>>(SyncPolicy4(10), *m_subscribers[0], *m_subscribers[1], *m_subscribers[2], *m_subscribers[3]);
+    m_sync4 = std::make_shared<message_filters::Synchronizer<SyncPolicy4>>(SyncPolicy4(2), *m_subscribers[0], *m_subscribers[1], *m_subscribers[2], *m_subscribers[3]);
     m_sync4->registerCallback(std::bind(&FlirCameraSynchronizer::callback4, this, _1, _2, _3, _4));
   }
   else if (num_topics == 5) {
-    m_sync5 = std::make_shared<message_filters::Synchronizer<SyncPolicy5>>(SyncPolicy5(10), *m_subscribers[0], *m_subscribers[1], *m_subscribers[2], *m_subscribers[3], *m_subscribers[4]);
+    m_sync5 = std::make_shared<message_filters::Synchronizer<SyncPolicy5>>(SyncPolicy5(2), *m_subscribers[0], *m_subscribers[1], *m_subscribers[2], *m_subscribers[3], *m_subscribers[4]);
     m_sync5->registerCallback(std::bind(&FlirCameraSynchronizer::callback5, this, _1, _2, _3, _4, _5));
   }
 }
