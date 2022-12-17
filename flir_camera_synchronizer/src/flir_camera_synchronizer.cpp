@@ -5,7 +5,6 @@
 
 #include <rclcpp_components/register_node_macro.hpp>
 #include <rclcpp/logging.hpp>
-#include <rclcpp/rclcpp.hpp>
 
 using namespace std::placeholders;
 
@@ -28,13 +27,22 @@ FlirCameraSynchronizer::FlirCameraSynchronizer(const rclcpp::NodeOptions & optio
   // -----------------------------
   // Create Publishers/Subscribers
   // -----------------------------
-  const auto qos = rmw_qos_profile_default;
+  const auto qos = rmw_qos_profile_sensor_data;
+  //auto subscriberlc = image_transport::create_subscription(this, "~/input/topic_1", std::bind(&FlirCameraSynchronizer::callbacklc, this, std::placeholders::_1), "raw", qos);
+  //auto subscriberrc = image_transport::create_subscription(this, "~/input/topic_0", std::bind(&FlirCameraSynchronizer::callbackrc, this, std::placeholders::_1), "raw", qos);
+
+  //m_subscribers.push_back(subscriberlc);
+  //m_subscribers.push_back(subscriberrc);
+
+
   for (int i = 0; i < num_topics; i++) {
     auto input = "~/input/topic_" + std::to_string(i);
     auto output = "~/output/topic_" + std::to_string(i);
 
     RCLCPP_INFO(this->get_logger(), "Creating subscriber for topic '%s'.", input.c_str());
     auto subscriber = std::make_shared<ImageSubscriber>(this, input, qos);
+    //auto subscriber = image_transport::create_subscription(this, input, std::bind(&FlirCameraSynchronizer::callback, this, std::placeholders::_1), "raw", qos);
+    //subscriber->registerCallback(std::bind(&FlirCameraSynchronizer::callback, this, _1));
     m_subscribers.push_back(subscriber);
 
 
@@ -47,8 +55,10 @@ FlirCameraSynchronizer::FlirCameraSynchronizer(const rclcpp::NodeOptions & optio
   // Create messsage_filter Sync Policy
   // ----------------------------------
   using namespace std::placeholders;
+  
   if (num_topics == 2) {
     m_sync2 = std::make_shared<message_filters::Synchronizer<SyncPolicy2>>(SyncPolicy2(2), *m_subscribers[0], *m_subscribers[1]);
+    m_sync2->setMaxIntervalDuration(rclcpp::Duration(1,0));
     m_sync2->registerCallback(std::bind(&FlirCameraSynchronizer::callback2, this, _1, _2));
   }
   else if (num_topics == 3) {
@@ -68,7 +78,7 @@ FlirCameraSynchronizer::FlirCameraSynchronizer(const rclcpp::NodeOptions & optio
 FlirCameraSynchronizer::~FlirCameraSynchronizer() {}
 
 void FlirCameraSynchronizer::syncTimeStamps(std::vector<ImageMsgPtr>& msgs) {
-  rclcpp::Time min_time;
+  rclcpp::Time min_time = message_filters::message_traits::TimeStamp<ImageMsg>::value(*msgs.at(0));
   for (auto msg : msgs) {
     const rclcpp::Time time = message_filters::message_traits::TimeStamp<ImageMsg>::value(*msg);
     if (time < min_time)
@@ -79,7 +89,10 @@ void FlirCameraSynchronizer::syncTimeStamps(std::vector<ImageMsgPtr>& msgs) {
     msg->header.stamp = min_time;
 }
 
+
 void FlirCameraSynchronizer::callback2(const ImageMsgConstPtr& msg1, const ImageMsgConstPtr& msg2) {
+
+  //RCLCPP_INFO(this->get_logger(), "CALLBACK2!");
   std::vector<ImageMsgPtr> msgs = {
     std::const_pointer_cast<ImageMsg>(msg1),
     std::const_pointer_cast<ImageMsg>(msg2),
